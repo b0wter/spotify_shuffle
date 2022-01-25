@@ -46,7 +46,6 @@ async function main() {
         else
         {
             const album = albums[randomInt(0, albums.length - 1)];
-            console.log(album);
             res.send(Html.forResult(album));
         }
     });
