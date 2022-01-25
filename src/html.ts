@@ -49,7 +49,7 @@ export class Html {
                     src="${album.image640Url}">
 
             </a>
-            <small style="color: gray; margin-top: 0.5em">Klicke auf das Cover um zu Spotify zu öffnen.</small>
+            <small style="color: gray; margin-top: 0.5em">Klicke auf das Cover um Spotify zu öffnen.</small>
             <a href="/" style="max-width: calc(90vw); margin-top: 1em; color: lightgray">weiterer Vorschlag</a>
         </div>
       `
