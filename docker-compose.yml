@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  share-helper:
+    container_name: ddf-shuffle
+    build: .
+    ports:
+      - "8084:8084/tcp"
+    environment:
+      TZ: 'Europe/Berlin'
+      DDF_SHUFFLE_PORT: 8084
+    restart: unless-stopped
+
+

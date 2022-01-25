@@ -1,0 +1,7 @@
+.vscode
+.idea
+dotenv_sample
+.env
+credentials.ts
+node_modules/
+dist/
