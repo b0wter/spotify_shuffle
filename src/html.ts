@@ -40,7 +40,7 @@ export class Html {
   {
       return `
         <div style="height: calc(100vh); align-items: center; justify-content: center; display: flex; flex-direction: column">
-            <h3 style="margin-bottom: 1em; color: lightgray">Probier doch mal diese Folge:</h3>
+            <h3 style="margin-bottom: 1em; color: lightgray">Probiere doch mal diese Folge:</h3>
             <a href="${album.url}">
                 <img 
                     style="width: calc(90vw); height: auto; max-width: 640; max-height: 640"
@@ -49,8 +49,8 @@ export class Html {
                     src="${album.image640Url}">
 
             </a>
-            <h4 style="max-width: calc(90vw); margin-top: 1em; color: lightgray">Für einen neuen Vorschlag Seite</h4>
-            <a href="/">neu laden</a>
+            <small style="color: gray; margin-top: 0.5em">Klicke auf das Cover um zu Spotify zu öffnen.</small>
+            <a href="/" style="max-width: calc(90vw); margin-top: 1em; color: lightgray">weiterer Vorschlag</a>
         </div>
       `
   }
