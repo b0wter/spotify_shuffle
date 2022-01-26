@@ -39,7 +39,7 @@ export class Html {
   private static resultElement(album: Album) : string
   {
       return `
-        <div style="height: calc(100vh); align-items: center; justify-content: center; display: flex; flex-direction: column">
+        <div style="overflow: hidden; height: 100%; align-items: center; justify-content: center; display: flex; flex-direction: column">
             <h3 style="margin-bottom: 1em; color: lightgray">Probiere doch mal diese Folge:</h3>
             <a href="${album.url}">
                 <img 
