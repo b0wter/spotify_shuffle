@@ -7,7 +7,7 @@ RUN npm run build
 
 FROM node:latest
 ENV NODE_ENV=production
-ENV DDF_SHUFFLE_PORT=8099
+ENV SPOTIFY_SHUFFLE_PORT=8099
 WORKDIR /app
 COPY --from=build /app/dist .
 COPY --from=build /app/node_modules ./node_modules

@@ -1,7 +1,9 @@
 import { Album } from "./album";
 
 export class Html {
-  public static readonly page = `
+  public static page(artistName: string) : string
+  {
+    return `
   <html lang="en">
 
   <head>
@@ -24,9 +26,9 @@ export class Html {
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#000000">    
-    <title>DDF Shuffle</title>
+    <title>%%ARTIST_NAME%% Shuffle</title>
     <meta name="description" content="Randomly selects a 'Die Drei ???' episode for you to listen to on Spotify.">
-    <meta property="og:title" content="DDF Shuffle">
+    <meta property="og:title" content="%%ARTIST_NAME%% Shuffle">
     <meta property="og:type" content="website">
   </head>
   
@@ -34,7 +36,8 @@ export class Html {
         %%RESULT%%
   </body>
   </html>
-  `
+  `.replace("%%ARTIST_NAME%%", artistName);
+  }
 
   private static resultElement(album: Album) : string
   {
@@ -55,9 +58,9 @@ export class Html {
       `
   }
 
-  public static forResult(album: Album) : string
+  public static forResult(album: Album, artistName: string) : string
   {
     let element = this.resultElement(album);
-    return this.page.replace("%%RESULT%%", element);
+    return this.page(artistName).replace("%%RESULT%%", element);
   }
 }

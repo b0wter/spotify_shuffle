@@ -8,7 +8,11 @@ services:
       - "8084:8084/tcp"
     environment:
       TZ: 'Europe/Berlin'
-      DDF_SHUFFLE_PORT: 8084
+      SPOTIFY_SHUFFLE_PORT: 8084
+      SPOTIFY_SHUFFLE_CLIENT_ID: 
+      SPOTIFY_SHUFFLE_CLIENT_SECRET: 
+      SPOTIFY_SHUFFLE_ARTIST_ID: 3meJIgRw7YleJrmbpbJK6S
+      SPOTIFY_SHUFFLE_ARTIST_NAME: DDF
     restart: unless-stopped
 
 

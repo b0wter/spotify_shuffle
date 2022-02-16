@@ -6,9 +6,11 @@ import { Album } from "./album";
 require('dotenv').config();
 
 const app = express();
-const port = process.env.DDF_SHUFFLE_PORT ?? 8099;
-const spotifyClientId = process.env.DDF_SHUFFLE_SPOTIFY_CLIENT_ID;
-const spotifyClientSecret = process.env.DDF_SHUFFLE_SPOTIFY_CLIENT_SECRET;
+const port = process.env.SPOTIFY_SHUFFLE_PORT ?? 8099;
+const spotifyClientId = process.env.SPOTIFY_SHUFFLE_CLIENT_ID;
+const spotifyClientSecret = process.env.SPOTIFY_SHUFFLE_CLIENT_SECRET;
+const spotifyArtistId = process.env.SPOTIFY_SHUFFLE_ARTIST_ID;
+const artistName = process.env.SPOTIFY_SHUFFLE_ARTIST_NAME ?? "Spotify";
 
 const albums: Album[] = [];
 
@@ -42,7 +44,7 @@ async function main() {
     }
     else
     {
-        throw new Error("Spotify client id or secret is not set. Please use the environment variables.");
+        throw new Error("Spotify client id or secret is not set. Please set SPOTIFY_SHUFFLE_CLIENT_ID and SPOTIFY_SHUFFLE_CLIENT_SECRET.");
     }
     console.log("Adding express configuration");
     app.use(express.static('public'));
@@ -58,12 +60,17 @@ async function main() {
         else
         {
             const album = albums[randomInt(0, albums.length - 1)];
-            res.send(Html.forResult(album));
+            res.send(Html.forResult(album, artistName));
         }
     });
 
+    if(spotifyArtistId === undefined || spotifyArtistId === null)
+    {
+        throw new Error("The artist id has not bben set. Please set SPOTIFY_SHUFFLE_ARTIST_ID.")
+    }
+
     console.log('Retrieving albums from Spotify');
-    const retrievedAlbums = await spotify?.getAllAlbums();
+    const retrievedAlbums = await spotify?.getAllAlbums(spotifyArtistId);
     if(retrievedAlbums)
     {
         for(const a of retrievedAlbums)

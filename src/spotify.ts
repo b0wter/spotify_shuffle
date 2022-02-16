@@ -39,9 +39,9 @@ export class Spotify
         return new Album(item.id, item.name, item.external_urls.spotify, item.images[0].url, item.images[1].url, item.images[2].url);
     }
 
-    private async getBatch(offset: number, batchSize: number) : Promise<any>
+    private async getBatch(offset: number, batchSize: number, artistId: string) : Promise<any>
     {
-        const result = await this.api.getArtistAlbums('3meJIgRw7YleJrmbpbJK6S', { limit: batchSize, offset: offset });
+        const result = await this.api.getArtistAlbums(artistId, { limit: batchSize, offset: offset });
         return result.body.items;
     }
 
@@ -52,7 +52,7 @@ export class Spotify
                 || album.name.includes("Originalmusik"))
     }
 
-    public async getAllAlbums() : Promise<Album[]>
+    public async getAllAlbums(artistId: string) : Promise<Album[]>
     {
         const batchSize = 50;
         let items : any[] = [];
@@ -61,7 +61,7 @@ export class Spotify
         do
         {
             console.log(`Retrieving next items with offset ${offset}.`);
-            const result = await this.getBatch(offset, batchSize);
+            const result = await this.getBatch(offset, batchSize, artistId);
             resultCount = result.length;
             items = items.concat(result);
             offset += resultCount;

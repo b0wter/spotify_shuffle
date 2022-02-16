@@ -1,12 +1,34 @@
 About
 =====
-This web app randomly selects a "Die Drei ???" episode for you to listen to. The data is taken from Spotify and refreshed each time the application is started. A new album is picked each time the page is (re)loaded. Clicking on the album cover directly brings you to Spotify to start playing.
+This web app randomly selects an album from a given artist to listen to. The data is taken from Spotify and refreshed each time the application is started. A new album is picked each time the page is (re)loaded. Clicking on the album cover directly brings you to Spotify to start playing. 
 
-Spotify
-=======
+Configuration
+=============
 To run your own instance of this web app you will need to create a Spotify client id and secret on the [Spotify Developer dashboard](https://developer.spotify.com/dashboard/).
+The app is configured by `.env` files ([check the usage section](https://www.npmjs.com/package/dotenv)) or via environment variables:
+```
+SPOTIFY_SHUFFLE_CLIENT_ID: 
+SPOTIFY_SHUFFLE_CLIENT_SECRET: 
+SPOTIFY_SHUFFLE_ARTIST_ID: 3meJIgRw7YleJrmbpbJK6S
+```
 
-The app required you to set two environmen variables `DDF_SHUFFLE_SPOTIFY_CLIENT_ID` and `DDF_SHUFFLE_SPOTIFY_CLIENT_SECRET`. There is an optional variable `DDF_SHUFFLE_PORT` to change the port the app is listening on.
+Client Id & Client Secret
+-------------------------
+Go to the Spotify developer dashboard and create a new app. You will be given the id as well as the secret.
 
-The app also supports `.env` files ([check the usage section](https://www.npmjs.com/package/dotenv)).
+Artist Id
+---------
+You can easily find an artist id by going to spotify.com. Search for the artist and copy the id from the url (`3meJIgRw7YleJrmbpbJK6S` in this case):
+```
+https://open.spotify.com/artist/3meJIgRw7YleJrmbpbJK6S
+```
 
+Optional variables
+------------------
+There are two optional environment variables:
+```
+SPOTIFY_SHUFFLE_ARTIST_NAME: DDF
+SPOTIFY_SHUFFLE_PORT: 8084
+```
+
+The **artist name*** is used in the page's title.
