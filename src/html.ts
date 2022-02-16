@@ -36,7 +36,7 @@ export class Html {
         %%RESULT%%
   </body>
   </html>
-  `.replace("%%ARTIST_NAME%%", artistName);
+  `.replaceAll("%%ARTIST_NAME%%", artistName);
   }
 
   private static resultElement(album: Album) : string
