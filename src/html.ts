@@ -27,7 +27,7 @@ export class Html {
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#000000">    
     <title>%%ARTIST_NAME%% Shuffle</title>
-    <meta name="description" content="Randomly selects a 'Die Drei ???' episode for you to listen to on Spotify.">
+    <meta name="description" content="Randomly selects a '%%ARTIST_NAME%%' episode for you to listen to on Spotify.">
     <meta property="og:title" content="%%ARTIST_NAME%% Shuffle">
     <meta property="og:type" content="website">
   </head>
