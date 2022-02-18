@@ -1,5 +1,5 @@
 import { Spotify } from "./spotify"
-import express  from 'express';
+import express, { Request, Response }  from 'express';
 import { Html } from "./html";
 import { Album } from "./album";
 
@@ -11,6 +11,7 @@ const spotifyClientId = process.env.SPOTIFY_SHUFFLE_CLIENT_ID;
 const spotifyClientSecret = process.env.SPOTIFY_SHUFFLE_CLIENT_SECRET;
 const spotifyArtistId = process.env.SPOTIFY_SHUFFLE_ARTIST_ID;
 const artistName = process.env.SPOTIFY_SHUFFLE_ARTIST_NAME ?? "Spotify";
+const cookieParser = require('cookie-parser');
 
 const albums: Album[] = [];
 
@@ -33,6 +34,45 @@ function getNowAsString() : string
     return(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
 }
 
+function getIgnoredEpisodesFromRequest(req: Request) : string[] {
+    const ignoredEpisodes : string[] = [];
+    if(req.cookies && req.cookies.ignoredEpisodes)
+    {
+        const rawIgnoredEpisodes = req.cookies.ignoredEpisodes.split(";");
+        for(const r of rawIgnoredEpisodes)
+            ignoredEpisodes.push(r);
+    }
+
+    if(req.query.ignore)
+    {
+        const i = req.query.ignore;
+        if(typeof(i) === "string")
+        {
+            if(albums.some(a => a.id === i))
+            {
+                ignoredEpisodes.push(i);
+            }
+            else
+            {
+                console.log(`Got ignore request for an unknown id '${i}'.`);
+            }
+        }
+        else
+        {
+            console.log(`Unknown query parameter value for 'ignored': ${req.query.ignore}`);
+        }
+    }
+
+    return ignoredEpisodes;
+}
+
+function setIgnoredEpisodes(res: Response, ignoredEpisodes: string[]) {
+    const unique = [...new Set(ignoredEpisodes)];
+    const merged = unique.join(';');
+    const trimmed = merged.substring(0, 4096);
+    res.cookie("ignoredEpisodes", trimmed);
+}
+
 async function main() {
     let spotify: Spotify | undefined = undefined;
     console.log("Creating Spotify client.")
@@ -48,10 +88,13 @@ async function main() {
     }
     console.log("Adding express configuration");
     app.use(express.static('public'));
+    app.use(cookieParser());
 
     console.log("Adding routes");
     app.get('/', async (req, res) => {
         console.log(`${getNowAsString()} - Incomig request for root page`);
+        const ignoredEpisodes = getIgnoredEpisodesFromRequest(req);
+        setIgnoredEpisodes(res, ignoredEpisodes);
         if(spotify === undefined || spotify === null)
         {
             console.log("Spotify client is not set properly. Cannot handle request.");
@@ -59,7 +102,8 @@ async function main() {
         }
         else
         {
-            const album = albums[randomInt(0, albums.length - 1)];
+            const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
+            const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
             res.send(Html.forResult(album, artistName));
         }
     });

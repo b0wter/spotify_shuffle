@@ -53,9 +53,10 @@ export class Html {
 
             </a>
             <small style="color: gray; margin-top: 0.5em">Klicke auf das Cover um Spotify zu öffnen.</small>
-            <a href="/" style="max-width: calc(90vw); margin-top: 1em; color: lightgray">weiterer Vorschlag</a>
+            <p><a href="/" style="max-width: calc(90vw); margin-top: 1em; color: lightgray">weiterer Vorschlag</a></p>
+            <p><small><a href="?ignore=%%ALBUM_ID%%" style="max-width: calc(90vw); margin-top: 1em; color: lightgray">Diese Folge nicht mehr vorschlagen.</a></small></p>
         </div>
-      `
+      `.replaceAll("%%ALBUM_ID%%", album.id);
   }
 
   public static forResult(album: Album, artistName: string) : string
