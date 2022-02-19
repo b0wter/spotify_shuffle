@@ -95,25 +95,17 @@ async function main() {
         console.log(`${getNowAsString()} - Incomig request for root page`);
         const ignoredEpisodes = getIgnoredEpisodesFromRequest(req);
         setIgnoredEpisodes(res, ignoredEpisodes);
-        if(spotify === undefined || spotify === null)
-        {
-            console.log("Spotify client is not set properly. Cannot handle request.");
-            res.send("rekt :(");
-        }
-        else
-        {
-            const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
-            const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
-            res.render('index', 
-                { 
-                    artistName: artistName, 
-                    albumUrl: album.url,
-                    albumImage64Url: album.image64Url,
-                    albumImage300Url: album.image300Url,
-                    albumImage640Url: album.image640Url,
-                    albumId: album.id
-                });
-        }
+        const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
+        const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
+        res.render('index', 
+            { 
+                artistName: artistName, 
+                albumUrl: album.url,
+                albumImage64Url: album.image64Url,
+                albumImage300Url: album.image300Url,
+                albumImage640Url: album.image640Url,
+                albumId: album.id
+            });
     });
 
     if(spotifyArtistId === undefined || spotifyArtistId === null)
