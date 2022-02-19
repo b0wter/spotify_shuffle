@@ -1,6 +1,5 @@
 import { Spotify } from "./spotify"
 import express, { Request, Response }  from 'express';
-import { Html } from "./html";
 import { Album } from "./album";
 
 require('dotenv').config();
