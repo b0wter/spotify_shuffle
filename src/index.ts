@@ -110,7 +110,8 @@ async function main() {
                     albumUrl: album.url,
                     albumImage64Url: album.image64Url,
                     albumImage300Url: album.image300Url,
-                    albumImage640Url: album.image640Url
+                    albumImage640Url: album.image640Url,
+                    albumId: album.id
                 });
         }
     });
