@@ -1,0 +1,44 @@
+body {
+    background: black;
+    margin: 0;
+}
+
+.container {
+    overflow: hidden;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.gray {
+    color: gray;
+}
+
+.light-gray {
+    color: lightgray;
+}
+
+.mb-1 {
+    margin-bottom: 1em;
+}
+
+.mt-05 {
+    margin-top: 0.5em;
+}
+
+#cover {
+    width: calc(90vw);
+    height: 100%;
+    max-width: 640px;
+    max-height: 640px;
+}
+
+.max-width-90 {
+    max-width: calc(90vw);
+}
+
+.small {
+    font-size: small;
+}

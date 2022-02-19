@@ -89,6 +89,7 @@ async function main() {
     console.log("Adding express configuration");
     app.use(express.static('public'));
     app.use(cookieParser());
+    app.set('view engine', 'pug');
 
     console.log("Adding routes");
     app.get('/', async (req, res) => {
@@ -104,7 +105,14 @@ async function main() {
         {
             const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
             const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
-            res.send(Html.forResult(album, artistName));
+            res.render('index', 
+                { 
+                    artistName: artistName, 
+                    albumUrl: album.url,
+                    albumImage64Url: album.image64Url,
+                    albumImage300Url: album.image300Url,
+                    albumImage640Url: album.image640Url
+                });
         }
     });
 
