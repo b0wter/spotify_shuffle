@@ -46,3 +46,11 @@ body {
 .center-text {
     text-align: center;
 }
+
+#footer {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 2em;
+    left: 0;
+}
