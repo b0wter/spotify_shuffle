@@ -72,6 +72,18 @@ function setIgnoredEpisodes(res: Response, ignoredEpisodes: string[]) {
     res.cookie("ignoredEpisodes", trimmed);
 }
 
+function uptimeAsFormattedString(){
+  const uptime : number = process.uptime();
+  function pad(s: number){
+    return (s < 10 ? '0' : '') + s;
+  }
+  var hours = Math.floor(uptime / (60*60));
+  var minutes = Math.floor(uptime % (60*60) / 60);
+  var seconds = Math.floor(uptime % 60);
+
+  return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+}
+
 async function main() {
     let spotify: Spotify | undefined = undefined;
     console.log("Creating Spotify client.")
@@ -106,6 +118,27 @@ async function main() {
                 albumImage640Url: album.image640Url,
                 albumId: album.id
             });
+    });
+
+    app.get('/health', async (req, res) => {
+        const healthCheck = {
+            uptime: uptimeAsFormattedString(),
+            message: 'OK',
+            albumCount: albums.length,
+            timestamp: getNowAsString()
+        };
+        try {
+            res.send(healthCheck);
+        } catch(e: any) {
+            if (typeof(e) === "string") {
+                healthCheck.message = e;
+            } else if (e instanceof Error) {
+                healthCheck.message = e.message;
+            } else {
+                healthCheck.message = "Unknown error";
+            }
+            res.status(503).send();
+        }
     });
 
     if(spotifyArtistId === undefined || spotifyArtistId === null)
