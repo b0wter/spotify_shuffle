@@ -42,3 +42,7 @@ body {
 .small {
     font-size: small;
 }
+
+.center-text {
+    text-align: center;
+}
