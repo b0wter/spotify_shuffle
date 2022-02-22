@@ -28,6 +28,10 @@ body {
     margin-top: 0.5em;
 }
 
+.ml-1 {
+    margin-left: 1em;
+}
+
 #cover {
     width: calc(90vw);
     height: 100%;
@@ -52,5 +56,13 @@ body {
     width: 100%;
     text-align: center;
     bottom: 2em;
+    left: 0;
+}
+
+#header {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 1em;
     left: 0;
 }
