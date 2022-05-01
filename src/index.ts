@@ -1,5 +1,5 @@
 import { Spotify } from "./spotify"
-import express, { Request, Response }  from 'express';
+import express, { Request, Response } from 'express';
 import { Album } from "./album";
 
 require('dotenv').config();
@@ -10,19 +10,45 @@ const spotifyClientId = process.env.SPOTIFY_SHUFFLE_CLIENT_ID;
 const spotifyClientSecret = process.env.SPOTIFY_SHUFFLE_CLIENT_SECRET;
 const spotifyArtistId = process.env.SPOTIFY_SHUFFLE_ARTIST_ID;
 const artistName = process.env.SPOTIFY_SHUFFLE_ARTIST_NAME ?? "Spotify";
+const logMeta = process.env.SPOTIFY_SHUFFLE_LOG_META ?? false;
 const cookieParser = require('cookie-parser');
+const winston = require('winston');
+
+const logger = winston.createLogger({
+    level: 'info',
+    transports: [
+        new winston.transports.File({
+            filename: 'app.log',
+            format: winston.format.json()
+        }),
+        new winston.transports.Console({
+            format: winston.format.simple()
+        })
+    ]
+});
+
+const metaLoggerTransports = [
+    new winston.transports.File({
+        filename: 'meta.log',
+        format: winston.format.json()
+    })
+];
+
+const metaLogger =
+    winston.createLogger({
+        level: 'info',
+        transports: logMeta ? metaLoggerTransports : []
+    });
 
 const albums: Album[] = [];
 
-function randomInt(min: number, max: number)
-{
+function randomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min +1)) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getNowAsString() : string
-{
+function getNowAsString(): string {
     let date_ob = new Date();
     let date = ("0" + date_ob.getDate()).slice(-2).toString();
     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2).toString();
@@ -30,35 +56,29 @@ function getNowAsString() : string
     let hours = date_ob.getHours().toString().padStart(2, '0');
     let minutes = date_ob.getMinutes().toString().padStart(2, '0');
     let seconds = date_ob.getSeconds().toString().padStart(2, '0');
-    return(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
+    return (year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
 }
 
-function getIgnoredEpisodesFromRequest(req: Request) : string[] {
-    const ignoredEpisodes : string[] = [];
-    if(req.cookies && req.cookies.ignoredEpisodes)
-    {
+function getIgnoredEpisodesFromRequest(req: Request): string[] {
+    const ignoredEpisodes: string[] = [];
+    if (req.cookies && req.cookies.ignoredEpisodes) {
         const rawIgnoredEpisodes = req.cookies.ignoredEpisodes.split(";");
-        for(const r of rawIgnoredEpisodes)
+        for (const r of rawIgnoredEpisodes)
             ignoredEpisodes.push(r);
     }
 
-    if(req.query.ignore)
-    {
+    if (req.query.ignore) {
         const i = req.query.ignore;
-        if(typeof(i) === "string")
-        {
-            if(albums.some(a => a.id === i))
-            {
+        if (typeof (i) === "string") {
+            if (albums.some(a => a.id === i)) {
                 ignoredEpisodes.push(i);
             }
-            else
-            {
-                console.log(`Got ignore request for an unknown id '${i}'.`);
+            else {
+                logger.warn(`Got ignore request for an unknown id '${i}'.`);
             }
         }
-        else
-        {
-            console.log(`Unknown query parameter value for 'ignored': ${req.query.ignore}`);
+        else {
+            logger.warn(`Unknown query parameter value for 'ignored': ${req.query.ignore}`);
         }
     }
 
@@ -72,46 +92,45 @@ function setIgnoredEpisodes(res: Response, ignoredEpisodes: string[]) {
     res.cookie("ignoredEpisodes", trimmed);
 }
 
-function uptimeAsFormattedString(){
-  const uptime : number = process.uptime();
-  function pad(s: number){
-    return (s < 10 ? '0' : '') + s;
-  }
-  var hours = Math.floor(uptime / (60*60));
-  var minutes = Math.floor(uptime % (60*60) / 60);
-  var seconds = Math.floor(uptime % 60);
+function uptimeAsFormattedString() {
+    const uptime: number = process.uptime();
+    function pad(s: number) {
+        return (s < 10 ? '0' : '') + s;
+    }
+    var hours = Math.floor(uptime / (60 * 60));
+    var minutes = Math.floor(uptime % (60 * 60) / 60);
+    var seconds = Math.floor(uptime % 60);
 
-  return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+    return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
 }
 
 async function main() {
     let spotify: Spotify | undefined = undefined;
-    console.log("Creating Spotify client.")
-    if(spotifyClientId && spotifyClientSecret && spotifyClientId.length > 0 && spotifyClientSecret.length > 0)
-    {
-        spotify = await Spotify.createFromCredentials(spotifyClientId, spotifyClientSecret);
-        if(spotify === undefined || spotify === null)
+    logger.info("Creating Spotify client.")
+    if (spotifyClientId && spotifyClientSecret && spotifyClientId.length > 0 && spotifyClientSecret.length > 0) {
+        spotify = await Spotify.createFromCredentials(spotifyClientId, spotifyClientSecret, logger);
+        if (spotify === undefined || spotify === null)
             throw new Error("Could not initialize the spotify api client.");
     }
-    else
-    {
+    else {
         throw new Error("Spotify client id or secret is not set. Please set SPOTIFY_SHUFFLE_CLIENT_ID and SPOTIFY_SHUFFLE_CLIENT_SECRET.");
     }
-    console.log("Adding express configuration");
+    logger.info("Adding express configuration");
     app.use(express.static('public'));
     app.use(cookieParser());
     app.set('view engine', 'pug');
 
-    console.log("Adding routes");
+    logger.info("Adding routes");
     app.get('/', async (req, res) => {
-        console.log(`${getNowAsString()} - Incomig request for root page`);
+        logger.info(`${getNowAsString()} - Incomig request for root page`);
         const ignoredEpisodes = getIgnoredEpisodesFromRequest(req);
         setIgnoredEpisodes(res, ignoredEpisodes);
         const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
         const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
-        res.render('index', 
-            { 
-                artistName: artistName, 
+        metaLogger.info({ timestamp: new Date(), albumId: album.id, albumName: album.name });
+        res.render('index',
+            {
+                artistName: artistName,
                 albumUrl: album.url,
                 albumImage64Url: album.image64Url,
                 albumImage300Url: album.image300Url,
@@ -129,8 +148,8 @@ async function main() {
         };
         try {
             res.send(healthCheck);
-        } catch(e: any) {
-            if (typeof(e) === "string") {
+        } catch (e: any) {
+            if (typeof (e) === "string") {
                 healthCheck.message = e;
             } else if (e instanceof Error) {
                 healthCheck.message = e.message;
@@ -141,37 +160,33 @@ async function main() {
         }
     });
 
-    if(spotifyArtistId === undefined || spotifyArtistId === null)
-    {
+    if (spotifyArtistId === undefined || spotifyArtistId === null) {
         throw new Error("The artist id has not bben set. Please set SPOTIFY_SHUFFLE_ARTIST_ID.")
     }
 
-    console.log('Retrieving albums from Spotify');
+    logger.info('Retrieving albums from Spotify');
     const retrievedAlbums = await spotify?.getAllAlbums(spotifyArtistId);
-    if(retrievedAlbums)
-    {
-        for(const a of retrievedAlbums)
-        {
+    if (retrievedAlbums) {
+        for (const a of retrievedAlbums) {
             albums.push(a);
         }
     }
-    else
-    {
+    else {
         throw new Error("Could not retrieve albums from Spotify.");
     }
 
-    console.log("Adding listener");
+    logger.info("Adding listener");
     app.listen(port, () => {
-        console.log(`Server is running at port ${port}.`)
+        logger.info(`Server is running at port ${port}.`)
     });
 
-    console.log("All done, listening for request.");
+    logger.info("All done, listening for request.");
 }
 
 // Running node locally does not require this but it is necessary to shut down properly in a container.
 process.on('SIGINT', () => {
-  console.info("Received exit signal")
-  process.exit(0)
+    logger.info("Received exit signal")
+    process.exit(0)
 })
 
 main();

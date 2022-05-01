@@ -4,7 +4,7 @@ const SpotifyWebApi = require('spotify-web-api-node');
 
 export class Spotify
 {
-    private constructor(private api: any) {
+    private constructor(private api: any, private logger: any) {
         //
     }
 
@@ -12,7 +12,7 @@ export class Spotify
     public name = 'Spotify';
     public logo = 'spotify';
 
-    public static async createFromCredentials(clientId: string, clientSecret: string) {
+    public static async createFromCredentials(clientId: string, clientSecret: string, logger: any) {
         if(!clientId || !clientSecret)
         {
             throw new Error("Spotify client id and/or client secret are empty!");
@@ -28,10 +28,10 @@ export class Spotify
                 spotifyApi.setAccessToken(data.body['access_token']);
             },
             function (err: any) {
-                console.log('Something went wrong when retrieving an access token', err);
+                logger.err('Something went wrong when retrieving an access token', err);
             }
         );
-        return new Spotify(spotifyApi);
+        return new Spotify(spotifyApi, logger);
     }
 
     private albumFromItem(item: any) : Album
@@ -60,12 +60,12 @@ export class Spotify
         let resultCount = 0;
         do
         {
-            console.log(`Retrieving next items with offset ${offset}.`);
+            this.logger.info(`Retrieving next items with offset ${offset}.`);
             const result = await this.getBatch(offset, batchSize, artistId);
             resultCount = result.length;
             items = items.concat(result);
             offset += resultCount;
-            console.log(`Got ${resultCount} items.`)
+            this.logger.info(`Got ${resultCount} items.`)
         }
         while(resultCount === 50)
         const albums = items.map(i => this.albumFromItem(i));
