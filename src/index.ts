@@ -11,6 +11,7 @@ const spotifyClientSecret = process.env.SPOTIFY_SHUFFLE_CLIENT_SECRET;
 const spotifyArtistId = process.env.SPOTIFY_SHUFFLE_ARTIST_ID;
 const artistName = process.env.SPOTIFY_SHUFFLE_ARTIST_NAME ?? "Spotify";
 const logMeta = process.env.SPOTIFY_SHUFFLE_LOG_META ?? false;
+const logMaxSize = process.env.SPOTIFY_SHUFFLE_MAX_LOG_SIZE ?? 10000000;
 const cookieParser = require('cookie-parser');
 const winston = require('winston');
 
@@ -19,6 +20,7 @@ const logger = winston.createLogger({
     transports: [
         new winston.transports.File({
             filename: 'app.log',
+            maxSize: logMaxSize,
             format: winston.format.json()
         }),
         new winston.transports.Console({
@@ -30,6 +32,7 @@ const logger = winston.createLogger({
 const metaLoggerTransports = [
     new winston.transports.File({
         filename: 'meta.log',
+        maxSize: logMaxSize,
         format: winston.format.json()
     })
 ];
