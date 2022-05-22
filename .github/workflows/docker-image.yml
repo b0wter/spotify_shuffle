@@ -25,4 +25,4 @@ jobs:
       with:
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         push: true 
-        tags: b0wter/spotify-shuffle:$(date +%s)
+        tags: b0wter/spotify-shuffle:latest #$(date +%s)
