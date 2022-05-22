@@ -25,5 +25,6 @@ jobs:
         username: b0wter
         password: ${{ secrets.DOCKER_HUB_PAT }}
         logout: true
-        
+    - name: Push the Docker image
+      run: docker push ${{ env.docker_tag }}        
     
