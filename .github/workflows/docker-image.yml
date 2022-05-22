@@ -26,7 +26,7 @@ jobs:
       uses: docker/login-action@v2.0.0
       with:
         username: b0wter
-        pas sword: ${{ docker_hub_pat }}
+        password: ${{ DOCKER_HUB_PAT }}
         logout: true
         
     
