@@ -25,12 +25,15 @@ html
     link(rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png")
 
     link(rel="stylesheet" href="/css/main.css")
+
   body()
     div(class="container center-text")
       div(id="header") 
         a(class="light-gray" href="https://github.com/b0wter/spotify_shuffle") GitHub
-        a(class="light-gray" href="https://twitter.com/b0wter" class="ml-1") Kontakt auf Twitter
-      h3(class="mb-1 light-gray") Probiere doch mal diese Folge aus:
+        a(class="light-gray" href="https://twitter.com/b0wter" class="ml-1") Twitter
+        p(class="small")
+          a(class="light-gray" href="#" onclick="var shouldDelete = confirm('Remove all items from blacklist?'); if(shouldDelete) { document.cookie = 'ignoredEpisodes' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; }; ") clear blacklist
+
       a(href=albumUrl)
         img(
           class="max-width-90"
@@ -38,9 +41,13 @@ html
           sizes="(max-width: 71px) 64px, (max-width: 333px) 300px, 640px"
           srx=albumImage640Url
         )
-      div(class="gray small") Klicke auf das Cover um Spotify zu öffnen
-      p()
-        a(href="/" class="max-width-90 light-gray") weiterer Vorschlag
 
-      p(class="small gray max-width-90")
-        a(id="footer" class="light-gray" href="/?ignore=" + albumId) diese Folge nicht mehr vorschlagen
+      div(id="footer" class="d-flex justify-content-center")
+        a(class="footer light-gray" href="/?ignore=" + albumId)
+          img(class="button" src="/img/ban.svg" style="width: 4.2em")
+
+        a(href=albumUrl)
+          img(class="button mr-2 ml-2" src="/img/play.svg" )
+
+        a(href="/")
+          img(class="button" src="/img/next.svg")
