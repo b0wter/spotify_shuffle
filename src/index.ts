@@ -72,11 +72,30 @@ function getIgnoredEpisodesFromRequest(req: Request): string[] {
             ignoredEpisodes.push(r);
     }
 
+    const fromQuery = getIgnoreEpisodeFromQuery(req);
+    if(fromQuery) {
+        ignoredEpisodes.push(fromQuery[0]);
+    }
+
+    return ignoredEpisodes;
+}
+
+function getIgnoreEpisodeFromQuery(req: Request) : [string, string] | undefined {
     if (req.query.ignore) {
         const i = req.query.ignore;
-        if (typeof (i) === "string") {
+        const n = req.query.name;
+        if (typeof (i) === "string" && typeof(n) === "string") {
             if (albums.some(a => a.id === i)) {
-                ignoredEpisodes.push(i);
+                return [i, n];
+            }
+            else {
+                logger.warn(`Got ignore request for an unknown id '${i}'.`);
+            }
+        }
+        else if(typeof(i) === 'string')
+        {
+            if (albums.some(a => a.id === i)) {
+                return [i, "unknown"]
             }
             else {
                 logger.warn(`Got ignore request for an unknown id '${i}'.`);
@@ -86,8 +105,14 @@ function getIgnoredEpisodesFromRequest(req: Request): string[] {
             logger.warn(`Unknown query parameter value for 'ignored': ${req.query.ignore}`);
         }
     }
+    return undefined;
+}
 
-    return ignoredEpisodes;
+function getUndoFromQuery(req: Request) : string | undefined {
+    if (req.query.undo && typeof(req.query.undo) === "string") {
+        return req.query.undo;
+    }
+    return undefined;
 }
 
 function setIgnoredEpisodes(res: Response, ignoredEpisodes: string[]) {
@@ -128,7 +153,10 @@ async function main() {
     logger.info("Adding routes");
     app.get('/', async (req, res) => {
         logger.info(`${getNowAsString()} - Incomig request for root page`);
-        const ignoredEpisodes = getIgnoredEpisodesFromRequest(req);
+        const undoFromQuery = getUndoFromQuery(req);
+        let ignoredEpisodes = getIgnoredEpisodesFromRequest(req);
+        ignoredEpisodes = ignoredEpisodes.filter(x => x !== undoFromQuery);
+        const ignoreFromQuery = getIgnoreEpisodeFromQuery(req);
         setIgnoredEpisodes(res, ignoredEpisodes);
         const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
         const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
@@ -140,7 +168,11 @@ async function main() {
                 albumImage64Url: album.image64Url,
                 albumImage300Url: album.image300Url,
                 albumImage640Url: album.image640Url,
-                albumId: album.id
+                albumId: album.id,
+                albumName: album.name,
+                previousAlbumId: ignoreFromQuery ? ignoreFromQuery[0] : undefined,
+                previousAlbumName: ignoreFromQuery ? ignoreFromQuery[1] : undefined,
+                blacklistLength: ignoredEpisodes.length
             });
     });
 

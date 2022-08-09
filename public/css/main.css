@@ -94,3 +94,27 @@ body {
 .button {
     width: 4.5em;
 }
+
+.alert-warning {
+	color: rgb(251, 215, 112);
+	background-color: rgb(61, 46, 0);
+}
+
+a.alert-warning {
+	color: rgb(251, 215, 112);
+}
+a.alert-warning:visited {
+	color: rgb(251, 215, 112);
+}
+a.alert-warning:hover {
+	color: rgb(251, 215, 112);
+}
+
+#blacklist-alert {
+	margin-bottom: 2em;
+	margin-left: 1em;
+	margin-right: 1em;
+	padding: 0.5em;
+	border: 1px none rebeccapurple;
+	border-radius: 0.25em;
+}

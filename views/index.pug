@@ -31,8 +31,14 @@ html
       div(id="header") 
         a(class="light-gray" href="https://github.com/b0wter/spotify_shuffle") GitHub
         a(class="light-gray" href="https://twitter.com/b0wter" class="ml-1") Twitter
-        p(class="small")
-          a(class="light-gray" href="#" onclick="var shouldDelete = confirm('Remove all items from blacklist?'); if(shouldDelete) { document.cookie = 'ignoredEpisodes' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; }; ") clear blacklist
+        p(id="clear-blacklist" class="small")
+          a(class="light-gray" href="#" onclick="var shouldDelete = confirm('Remove all items from blacklist?'); if(shouldDelete) { document.getElementById('clear-blacklist').children[0].innerHTML = 'clear blacklist (0 elements)'; document.cookie = 'ignoredEpisodes' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; }; ")
+            = "clear blacklist (" + blacklistLength + (blacklistLength === 1 ? " element)" : " elements)")
+        if(previousAlbumId)
+          div(id="blacklist-alert" class="alert-warning mb-2") 
+            = "'" + decodeURIComponent(previousAlbumName) + "' is now on the blacklist. "
+            a(class="alert-warning" href="/?undo=" + previousAlbumId) undo
+
 
       a(href=albumUrl)
         img(
@@ -43,7 +49,7 @@ html
         )
 
       div(id="footer" class="d-flex justify-content-center")
-        a(class="footer light-gray" href="/?ignore=" + albumId)
+        a(class="footer light-gray" href="/?ignore=" + albumId + "&name=" + encodeURIComponent(albumName))
           img(class="button" src="/img/ban.svg" style="width: 4.2em")
 
         a(href=albumUrl)
