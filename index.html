@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./public/css/main.css">
+</head>
+<body>
+    <header>
+        <button class="clear-button" aria-label="Clear the banned album list">🗑️ Clear Blacklist</button>
+        <section class="socials">
+            <img src="[TWITTER ICON PLACEHOLDER]" alt="T">
+            <img src="[GITHUB ICON PLACEHOLDER]" alt="G">
+        </section>
+    </header>
+    <main>
+        <button disabled class="chevron left" aria-label="Select the prior selected album"></button>
+        <section>
+            <img src="./public/img/sample.jpg" alt="An image displaying the album cover" draggable="false">
+        </section>
+        <button id="next-album-button" class="chevron right" aria-label="Select the next random album"></button>
+    </main>
+    <footer>
+        <button aria-hidden="true" disabled class="footer-chevron hidden chevron left" aria-label="Select the prior selected album"></button>
+        <button class="ban" aria-label="Exclude the current album from reappearing"></button>
+        <button id="play-button" class="play" aria-label="Play the currently selected album on Spotify">
+            <span class="note-icon" role="img" aria-label="The first part of the play icon, displaying the left part of a quaver"></span>
+            <span class="note-icon" role="img" aria-label="The second part of the play icon, displaying the right part of a quaver"></span>
+        </button>
+        <button aria-hidden="true" id="footer-next-album-button" class="footer-chevron hidden chevron right" aria-label="Select the next random album"></button>
+    </footer>
+    <div class="transition next" id="nextTransition" role="img" aria-hidden="true" aria-label="A visual transition bar moving from the left side of the screen to the right side of the screen"></div>
+    <div class="transition to-spotify" id="spotifyTransition" role="img" aria-hidden="true" aria-label="A visual transition circle quickly expanding before redirecting to Spotify"></div>
+    <!-- TODO: Move to JS file, then remove -->
+    <script>
+        // Transition Components
+        const nextTransition = document.getElementById("nextTransition");
+        const spotifyTransition = document.getElementById("spotifyTransition");
+
+        // Chevron Click Event Handling
+        document.getElementById("next-album-button").addEventListener("click", () => nextTransition.classList.add("active"));
+        document.getElementById("footer-next-album-button").addEventListener("click", () => nextTransition.classList.add("active"));
+
+        // Chevron Animation End Event Handling
+        nextTransition.addEventListener("animationend", () => nextTransition.classList.remove("active"));
+        spotifyTransition.addEventListener("animationend", () => {
+            // Redirect to the Spotify URL
+            document.location.href = "https://spotify.com";
+        } );
+
+        // Play Button Click Event Handling
+        document.getElementById("play-button").addEventListener("click", () => spotifyTransition.classList.add("active"));
+    </script>
+</body>
+</html>
