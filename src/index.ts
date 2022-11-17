@@ -115,6 +115,14 @@ function getUndoFromQuery(req: Request) : string | undefined {
     return undefined;
 }
 
+function getThemeFromQuery(req: Request) : string {
+    if (req.query.newTheme) {
+        return "index_new"
+    } else {
+        return "index"
+    }
+}
+
 function setIgnoredEpisodes(res: Response, ignoredEpisodes: string[]) {
     const unique = [...new Set(ignoredEpisodes)];
     const merged = unique.join(';');
@@ -161,7 +169,9 @@ async function main() {
         const nonIgnoredAlbums = albums.filter(a => !ignoredEpisodes.some((i: string) => a.id === i));
         const album = nonIgnoredAlbums[randomInt(0, nonIgnoredAlbums.length - 1)];
         metaLogger.info({ timestamp: new Date(), albumId: album.id, albumName: album.name });
-        res.render('index',
+        const theme = getThemeFromQuery(req);
+        logger.info(`Using theme ${theme}`);
+        res.render(theme,
             {
                 artistName: artistName,
                 albumUrl: album.url,
