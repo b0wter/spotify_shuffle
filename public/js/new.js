@@ -18,14 +18,43 @@ spotifyTransition.addEventListener("animationend", () => {
   spotifyTransition.classList.remove("active");
 });
 
+window.onLoaded(onLoaded);
+
 // Play Button Click Event Handling
 document
   .getElementById("play-button")
   .addEventListener("click", () => spotifyTransition.classList.add("active"));
 
 function onLoaded() {
-  // Load the transition OUT animation
-  // If the stack has reached a limit, reset the stack
+  const search = new URLSearchParams(window.location.search);
+  let stack = sessionStorage.getItem("stack");
+
+  if (stack == null) {
+    const newStack = { episodes: [] };
+    sessionStorage.setItem("stack", JSON.stringify(newStack));
+    stack = newStack;
+  } else stack = JSON.parse(stack);
+
+  if (search.has("id")) {
+    const id = search.get("id");
+    const asInt = Number.parseInt(id);
+
+    if (
+      stack.episodes != null &&
+      Number.isInteger(asInt) &&
+      stack.episodes[stack.episodes.length - 1] !== id
+    ) {
+      stack.episodes.push(id);
+      sessionStorage.setItem("stack", JSON.stringify(stack));
+    }
+  }
+
+  // Enable the chevron if it can be used
+  if (stack.episodes.length > 1) {
+    document.querySelectorAll(".chevron.left").forEach((chevron) => {
+      chevron.disabled = false;
+    });
+  }
 }
 
 function onTransitionEnd() {
@@ -36,7 +65,6 @@ function onTransitionEnd() {
 }
 
 function onNextEpisodeClick() {
-  // Add the current episode to the stack
   // Save stack in browser local storage
 
   // Load the transition IN animation
