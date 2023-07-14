@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="msapplication-TileColor" content="#ffffff&quot;" />
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Randomly selects a 'undefined' episode for you to listen to on Spotify." />
+    <meta property="og:title" content="undefined Shuffle" />
+    <meta property="og:type" content="website" />
+    <title>undefined Shuffle</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="../public/css/new.css" />
+</head>
+
+<body>
+    <header>
+        <button class="clear-button" aria-label="Clear the banned album list">🗑️ Clear Blacklist</button>
+        <section class="socials"><a href="https://github.com/b0wter/spotify_shuffle"><img class="social-image"
+                    src="/img/github.png" /></a><a href="https://twitter.com/b0wter/"><img class="social-image"
+                    src="/img/twitter.png" /></a></section>
+    </header>
+    <main>
+        <button class="chevron left" aria-label="Go back to previous album"></button>
+        <section><a><img src="BEISPIEL.jpg" /></a></section>
+        <button class="chevron right" id="next-album-button" aria-label="Select the next random album"></button>
+    </main>
+    <footer>
+        <button class="footer-chevron hidden chevron left" aria-hidden="true" disabled="disabled"
+            aria-label="Select the prior selected album"></button>
+        <button class="ban" aria-label="Exclude the current album from reappearing"></button>
+        <button class="play" id="play-button" aria-label="Play the currently selected album on Spotify"><span
+                class="note-icon" role="img"
+                aria-label="The first part of the play icon, displaying the left part of a quaver"></span><span
+                class="note-icon" role="img"
+                aria-label="The second part of the play icon, displaying the right part of a quaver"></span></button>
+        <button class="footer-chevron hidden chevron right" aria-hidden="true" id="footer-next-album-button"
+            aria-label="Select the next random album"></button>
+    </footer>
+    <div class="transition next" id="nextTransition" role="img" aria-hidden="true"
+        aria-label="A visual transition bar moving from the left side of the screen to the right side of the screen">
+    </div>
+    <div class="transition to-spotify" id="spotifyTransition" role="img" aria-hidden="true"
+        aria-label="A visual transition circle quickly expanding before redirecting to Spotify"></div>
+    <script src="/js/new.js"></script>
+</body>
+
+</html>
