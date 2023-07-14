@@ -45,10 +45,20 @@ body {
   left: 100vw;
   width: 100vw;
   height: 100vh;
-  animation: nextTransition 1s;
-  -moz-animation: nextTransition 1s;
-  -o-animation: nextTransition 1s;
-  -webkit-animation: nextTransition 1s;
+}
+
+.transition.transition.next.active.in {
+  animation: nextTransitionIn 0.5s forwards;
+  -moz-animation: nextTransitionIn 0.5s forwards;
+  -o-animation: nextTransitionIn 0.5s forwards;
+  -webkit-animation: nextTransitionIn 0.5s forwards;
+}
+
+.transition.next.active.out {
+  animation: nextTransitionOut 0.5s;
+  -moz-animation: nextTransitionOut 0.5s;
+  -o-animation: nextTransitionOut 0.5s;
+  -webkit-animation: nextTransitionOut 0.5s;
 }
 
 .transition.to-spotify.active {
@@ -83,16 +93,22 @@ body {
   height: 10%;
 }
 
-@keyframes nextTransition {
-  0% {
+@keyframes nextTransitionIn {
+  from {
     left: -100vw;
   }
 
-  50% {
+  to {
+    left: 0;
+  }
+}
+
+@keyframes nextTransitionOut {
+  from {
     left: 0;
   }
 
-  100% {
+  to {
     left: 100vw;
   }
 }

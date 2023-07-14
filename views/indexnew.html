@@ -24,6 +24,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="stylesheet" href="../public/css/new.css" />
+    <script src="../public/js/new.js" defer></script>
 </head>
 
 <body>
@@ -34,7 +35,7 @@
                     src="../public/img/twitter.png" /></a></section>
     </header>
     <main>
-        <button class="chevron left" aria-label="Go back to previous album"></button>
+        <button class="chevron left" aria-label="Go back to previous album" disabled="disabled"></button>
         <section><a><img src="BEISPIEL.jpg" /></a></section>
         <button class="chevron right" id="next-album-button" aria-label="Select the next random album"></button>
     </main>
@@ -50,7 +51,7 @@
         <button class="footer-chevron hidden chevron right" aria-hidden="true" id="footer-next-album-button"
             aria-label="Select the next random album"></button>
     </footer>
-    <div class="transition next" id="nextTransition" role="img" aria-hidden="true"
+    <div class="transition next active out" id="nextTransition" role="img" aria-hidden="true"
         aria-label="A visual transition bar moving from the left side of the screen to the right side of the screen">
     </div>
     <div class="transition to-spotify" id="spotifyTransition" role="img" aria-hidden="true"
