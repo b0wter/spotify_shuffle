@@ -122,6 +122,10 @@ header {
   padding: 0 2rem;
 }
 
+.socials a {
+  margin-left: 2rem;
+}
+
 .clear-button {
   cursor: pointer;
   position: relative;
@@ -178,10 +182,16 @@ main section {
   height: 70vh;
 }
 
-main section img {
-  border: 1rem solid black;
+main section a {
   width: 55%;
   height: 55%;
+}
+
+main section img {
+  outline: 1rem solid black;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .social-image {
@@ -434,6 +444,11 @@ button.play:hover .note-icon::after {
 
   footer button {
     margin: 2rem;
+  }
+
+  main section a {
+    width: 35%;
+    height: 35%;
   }
 }
 
