@@ -20,6 +20,10 @@ spotifyTransition.addEventListener("animationend", () => {
 
 window.onLoaded(onLoaded);
 
+document
+  .querySelectorAll(".chevron.left")
+  .forEach((chevron) => chevron.addEventListener("click", onLastEpisodeClick));
+
 // Play Button Click Event Handling
 document
   .getElementById("play-button")
@@ -65,16 +69,18 @@ function onTransitionEnd() {
 }
 
 function onNextEpisodeClick() {
-  // Save stack in browser local storage
-
   // Load the transition IN animation
   nextTransition.classList.add("active");
   nextTransition.classList.replace("out", "in");
 }
 
 function onLastEpisodeClick() {
-  // Pop the last episode and save its id as X
-  // Save stack in browser local storage
-  // Play reversed animation
-  // Reload the window with parameter /stack?episodeID=X
+  let stack = JSON.parse(sessionStorage.getItem("stack"));
+
+  if (stack?.episodes?.length > 1) {
+    const lastEpisode = stack.episodes.pop();
+    sessionStorage.setItem("stack", JSON.stringify(stack));
+    window.location.href = "LOCATION HERE";
+    // Reload the window with parameter /stack?episodeID=X
+  }
 }
