@@ -210,7 +210,7 @@ async function main() {
   });
 
   app.get("/stack", async (req, res) => {
-    // TODO: Do the same as above, but use the ?episodeID=N property to guarantee the episode
+    // TODO: Do the same as above, but use the property to guarantee the episode, and remove /stack
   });
 
   app.get("/health", async (req, res) => {
