@@ -43,7 +43,10 @@ export class Spotify
     {
         return !(album.name.includes("liest")
                 || album.name.includes("Outro")
-                || album.name.includes("Originalmusik"))
+                || album.name.includes("Originalmusik")
+                || album.name.includes("Original-Hörspiel zum")
+                || album.name === "Das verfluchte Schloss" // Movie
+                || album.name === "Das Geheimnis der Geisterinsel"); // Movie
     }
 
     public async getAllAlbums(artistId: string, showId: string) : Promise<Album[]>
