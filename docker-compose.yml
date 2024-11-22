@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   web:
     container_name: ddf-shuffle
@@ -12,6 +10,7 @@ services:
       SPOTIFY_SHUFFLE_CLIENT_ID: 
       SPOTIFY_SHUFFLE_CLIENT_SECRET: 
       SPOTIFY_SHUFFLE_ARTIST_ID: 3meJIgRw7YleJrmbpbJK6S
+      SPOTIFY_SHUFFLE_SHOW_ID: 5cgMSSNAioVK0STCTlvo0z
       SPOTIFY_SHUFFLE_ARTIST_NAME: Die drei Fragezeichen
       SPOTIFY_SHUFFLE_MAX_LOG_SIZE: 10000000
       SPOTIFY_SHUFFLE_LOG_META: "false"

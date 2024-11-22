@@ -1,6 +1,6 @@
 About
 =====
-This web app randomly selects an album from a given artist to listen to. The data is taken from Spotify and refreshed each time the application is started. A new album is picked each time the page is (re)loaded. Clicking on the album cover directly brings you to Spotify to start playing. 
+This web app randomly selects an album from a given artist and optional also a show to listen to. The data is taken from Spotify and refreshed each time the application is started. A new album is picked each time the page is (re)loaded. Clicking on the album cover directly brings you to Spotify to start playing. 
 
 Configuration
 =============
@@ -10,6 +10,7 @@ The app is configured by `.env` files ([check the usage section](https://www.npm
 SPOTIFY_SHUFFLE_CLIENT_ID: 
 SPOTIFY_SHUFFLE_CLIENT_SECRET: 
 SPOTIFY_SHUFFLE_ARTIST_ID: 3meJIgRw7YleJrmbpbJK6S
+SPOTIFY_SHUFFLE_SHOW_ID: 5cgMSSNAioVK0STCTlvo0z
 ```
 
 Client Id & Client Secret
@@ -23,9 +24,16 @@ You can easily find an artist id by going to spotify.com. Search for the artist 
 https://open.spotify.com/artist/3meJIgRw7YleJrmbpbJK6S
 ```
 
+Show Id (optional)
+---------
+Shows can be added in the same way as artists do (`5cgMSSNAioVK0STCTlvo0z` in this case):
+```
+https://open.spotify.com/show/5cgMSSNAioVK0STCTlvo0z
+```
+
 Optional variables
 ------------------
-There are two optional environment variables:
+Besides the Show Id, there are two optional environment variables:
 ```
 SPOTIFY_SHUFFLE_ARTIST_NAME: DDF
 SPOTIFY_SHUFFLE_PORT: 8084
