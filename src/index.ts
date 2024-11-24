@@ -9,6 +9,7 @@ const port = process.env.SPOTIFY_SHUFFLE_PORT ?? 8099;
 const spotifyClientId = process.env.SPOTIFY_SHUFFLE_CLIENT_ID;
 const spotifyClientSecret = process.env.SPOTIFY_SHUFFLE_CLIENT_SECRET;
 const spotifyArtistId = process.env.SPOTIFY_SHUFFLE_ARTIST_ID;
+const spotifyShowId = process.env.SPOTIFY_SHUFFLE_SHOW_ID;
 const artistName = process.env.SPOTIFY_SHUFFLE_ARTIST_NAME ?? "Spotify";
 const logMeta = process.env.SPOTIFY_SHUFFLE_LOG_META ?? false;
 const logMaxSize = process.env.SPOTIFY_SHUFFLE_MAX_LOG_SIZE ?? 10000000;
@@ -208,12 +209,13 @@ async function main() {
     });
 
     if (spotifyArtistId === undefined || spotifyArtistId === null) {
-        throw new Error("The artist id has not bben set. Please set SPOTIFY_SHUFFLE_ARTIST_ID.")
+        throw new Error("The artist id has not been set. Please set SPOTIFY_SHUFFLE_ARTIST_ID.")
     }
 
     logger.info('Retrieving albums from Spotify');
-    const retrievedAlbums = await spotify?.getAllAlbums(spotifyArtistId);
+    const retrievedAlbums = await spotify?.getAllAlbums(spotifyArtistId, spotifyShowId);
     if (retrievedAlbums) {
+        logger.info("Total albums: " + retrievedAlbums.length);
         for (const a of retrievedAlbums) {
             albums.push(a);
         }
