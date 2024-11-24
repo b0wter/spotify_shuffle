@@ -54,7 +54,7 @@ export class Spotify
         const albumPromises = [];
         albumPromises.push(this.getArtistOrShowAlbums(artistId, "artist"));
         if (showId) {
-            albumPromises.push(this.getArtistOrShowAlbums(showId, "show");
+            albumPromises.push(this.getArtistOrShowAlbums(showId, "show"));
         }
 
         const albums = await Promise.all(albumPromises).then((arrays) => arrays.flat());

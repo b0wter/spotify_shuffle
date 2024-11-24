@@ -213,7 +213,7 @@ async function main() {
     }
 
     logger.info('Retrieving albums from Spotify');
-    const retrievedAlbums = await spotify?.getAllAlbums(spotifyArtistId, spotifyShowId);
+    const retrievedAlbums = await spotify?.getAllAlbums(spotifyArtistId ?? "", spotifyShowId ?? "");
     if (retrievedAlbums) {
         logger.info("Total albums: " + retrievedAlbums.length);
         for (const a of retrievedAlbums) {
