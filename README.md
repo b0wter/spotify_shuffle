@@ -1,3 +1,9 @@
+DEPRECATION
+===========
+This project has been archived and is no longer maintained because it was superseded by [Album Shuffler](https://github.com/albumshuffler).
+
+You can find a live demo [here](https://kassettenwechsler.de)
+
 About
 =====
 This web app randomly selects an album from a given artist and optional also a show to listen to. The data is taken from Spotify and refreshed each time the application is started. A new album is picked each time the page is (re)loaded. Clicking on the album cover directly brings you to Spotify to start playing. 
